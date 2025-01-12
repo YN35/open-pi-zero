@@ -13,9 +13,9 @@
     ],
     "mounts": [
         "source=/home/yn35/code/open-pi-zero,target=/root/open-pi-zero,type=bind",
-        "source=/data2/yn35,target=/data,type=bind"
+        "source=/home/yn35/data,target=/data,type=bind"
     ],
-    "workspaceFolder": "/root/Agent-Sora-beta1",
+    "workspaceFolder": "/root/open-pi-zero",
     "customizations": {
         "vscode": {
             "extensions": [

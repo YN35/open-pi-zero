@@ -25,7 +25,7 @@ COPY docker/nvidia_layers.json /etc/vulkan/implicit_layer.d/nvidia_layers.json
 # install dependencies
 WORKDIR /root
 RUN pip install pip==24.2 setuptools==75.2.0 wheel==0.44.0
-RUN pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+RUN pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 --index-url https://download.pytorch.org/whl/cu121
 RUN pip install av==12.0.0
 
 

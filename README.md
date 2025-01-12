@@ -1,5 +1,16 @@
 # open-pi-zero
 
+
+
+```console
+python scripts/try_checkpoint_in_simpler.py \
+    --task google_robot_pick_horizontal_coke_can \
+    --checkpoint_path ...fractal_beta.pt \
+    --recording \
+    --use_bf16 \
+    --use_torch_compile # first batch will be slow
+```
+
 This repo implements the [pi0](https://www.physicalintelligence.company/download/pi0.pdf) model from Physical Intelligence (Pi) based on my knowledge of the paper.
 
 The model adopts a MoE-like architecture (or the recent [MoT](https://arxiv.org/abs/2411.04996), each expert has its own set of parameters and only interacts through attention), and uses a pre-trained 3B PaliGemma VLM (2.291B to be fine-tuned) and a new set of action expert parameters (0.315B). Block-wise causal masking is used such that VLM block attends to itself, proprioception (sharing weights with action) attends to itself and VLM, and action attends to all; each block is fully bidirectional within. The model is trained with flow matching loss on the action chunk output from the action expert.
