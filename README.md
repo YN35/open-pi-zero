@@ -1,6 +1,8 @@
 # open-pi-zero
 
-## Simple Docker installation
+## インストールから学習までのまとめ
+
+### インストール
 
 ```console
 docker build . -t openpi0
@@ -24,7 +26,7 @@ python scripts/try_checkpoint_in_simpler.py \
     --use_torch_compile # first batch will be slow
 ```
 
-### Train
+### 学習
 
 Comment out Line 299-306 in `/opt/conda/lib/python3.10/site-packages/tensorflow_datasets/core/dataset_builder.py`
 ```console
@@ -47,7 +49,7 @@ python scripts/data/modify_rlds_dataset.py \
     --max_episodes_in_memory=200
 ```
 
-```condole
+```console
 CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python \
     scripts/run.py \
     --config-name=bridge \
