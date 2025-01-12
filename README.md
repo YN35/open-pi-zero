@@ -1,6 +1,6 @@
 # open-pi-zero
 
-## Detailed installation
+## Simple Docker installation
 
 ```console
 docker build . -t openpi0
@@ -24,6 +24,53 @@ python scripts/try_checkpoint_in_simpler.py \
     --use_torch_compile # first batch will be slow
 ```
 
+### Train
+
+Comment out Line 299-306 in `/opt/conda/lib/python3.10/site-packages/tensorflow_datasets/core/dataset_builder.py`
+```console
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh
+mkdir /data/oxe/fractal20220817_data
+cd /data/oxe/fractal20220817_data
+gsutil -m cp -r gs://gresearch/robotics/fractal20220817_data/0.1.0 /data/oxe/fractal20220817_data
+export VLA_DATA_DIR=/data/oxe/fractal20220817_data
+ulimit -n 20000
+
+# dataset: bridge_dataset, or fractal20220817_data
+python scripts/data/modify_rlds_dataset.py \
+    --dataset=fractal20220817_data \
+    --data_dir=/data/oxe \
+    --target_dir=/data/oxe/resize_224 \
+    --mods=resize_and_jpeg_encode \
+    --n_workers=40 \
+    --max_episodes_in_memory=200
+```
+
+```condole
+CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python \
+    scripts/run.py \
+    --config-name=bridge \
+    device=cuda:0 \
+    debug=True \
+    wandb=null \
+    log_dir=results/test/ \
+    global_batch_size=32 \
+    per_device_batch_size=16 \
+    flow_sampling=beta \
+    data.train.shuffle_buffer_size=10000 \
+    data.train.num_parallel_calls=10 \
+    eval_freq=50 \
+    eval_size=64 \
+    save_model_freq=100 \
+    lora=False \
+    quantize=False \
+    use_amp=True \
+    use_torch_compile=True \
+    use_bf16=True
+```
+
+## Description
 This repo implements the [pi0](https://www.physicalintelligence.company/download/pi0.pdf) model from Physical Intelligence (Pi) based on my knowledge of the paper.
 
 The model adopts a MoE-like architecture (or the recent [MoT](https://arxiv.org/abs/2411.04996), each expert has its own set of parameters and only interacts through attention), and uses a pre-trained 3B PaliGemma VLM (2.291B to be fine-tuned) and a new set of action expert parameters (0.315B). Block-wise causal masking is used such that VLM block attends to itself, proprioception (sharing weights with action) attends to itself and VLM, and action attends to all; each block is fully bidirectional within. The model is trained with flow matching loss on the action chunk output from the action expert.

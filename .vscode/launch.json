@@ -1,0 +1,67 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python デバッガー: 現在のファイル",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Inference Test Train",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            // CUDA_VISIBLE_DEVICES=0 HYDRA_FULL_ERROR=1 python \
+            // scripts/run.py \
+            // --config-name=bridge \
+            // device=cuda:0 \
+            // debug=True \
+            // wandb=null \
+            // log_dir=results/test/ \
+            // global_batch_size=32 \
+            // per_device_batch_size=16 \
+            // flow_sampling=beta \
+            // data.train.shuffle_buffer_size=10000 \
+            // data.train.num_parallel_calls=10 \
+            // eval_freq=50 \
+            // eval_size=64 \
+            // save_model_freq=100 \
+            // lora=False \
+            // quantize=False \
+            // use_amp=True \
+            // use_torch_compile=True \
+            // use_bf16=True
+            "program": "scripts/run.py",
+            "args": [
+                "--config-name=bridge",
+                "device=cuda:0",
+                "debug=True",
+                "wandb=null",
+                "log_dir=results/test/",
+                "global_batch_size=8",
+                "per_device_batch_size=4",
+                "flow_sampling=beta",
+                "data.train.shuffle_buffer_size=10000",
+                "data.train.num_parallel_calls=10",
+                "eval_freq=50",
+                "eval_size=64",
+                "save_model_freq=100",
+                "lora=False",
+                "quantize=False",
+                "use_amp=True",
+                "use_torch_compile=True",
+                "use_bf16=True"
+            ],
+            "justMyCode": true,
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "0",
+                "HYDRA_FULL_ERROR": "1"
+            }
+        },
+    ]
+}
