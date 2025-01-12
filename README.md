@@ -1,11 +1,24 @@
 # open-pi-zero
 
+## Detailed installation
 
+```console
+docker build . -t openpi0
+pip install -e .
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+sudo apt-get update
+sudo apt-get install git-lfs
+git lfs install
+huggingface-cli login
+cd /data
+git clone https://huggingface.co/allenzren/open-pi-zero
+huggingface-cli download google/paligemma-3b-pt-224 --local-dir /data/huggingface_cache/paligemma-3b-pt-224
+```
 
 ```console
 python scripts/try_checkpoint_in_simpler.py \
     --task google_robot_pick_horizontal_coke_can \
-    --checkpoint_path ...fractal_beta.pt \
+    --checkpoint_path /data/open-pi-zero/fractal_beta_step29576_2024-12-29_13-10_42.pt \
     --recording \
     --use_bf16 \
     --use_torch_compile # first batch will be slow

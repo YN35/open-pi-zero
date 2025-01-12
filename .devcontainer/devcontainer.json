@@ -8,12 +8,12 @@
         "--gpus",
         "all",
         "-e",
-        "NVIDIA_DRIVER_CAPABILITIES=compute,compat32,utility,video",
+        "NVIDIA_DRIVER_CAPABILITIES=all",
         "--privileged"
     ],
     "mounts": [
-        "source=/home/yn35/code/open-pi-zero,target=/root/open-pi-zero,type=bind",
-        "source=/home/yn35/data,target=/data,type=bind"
+        "source=/home/ynn/code/open-pi-zero,target=/root/open-pi-zero,type=bind",
+        "source=/data2/yn35,target=/data,type=bind"
     ],
     "workspaceFolder": "/root/open-pi-zero",
     "customizations": {

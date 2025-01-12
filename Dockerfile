@@ -29,9 +29,11 @@ RUN pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 --index-url h
 RUN pip install av==12.0.0
 
 
-RUN git clone https://github.com/simpler-env/ManiSkill2_real2sim.git
-RUN pip install -e ./ManiSkill2_real2sim
-RUN git clone https://github.com/simpler-env/SimplerEnv.git
+
+RUN git clone https://github.com/allenzren/SimplerEnv --recurse-submodules
+RUN pip install -e ./SimplerEnv/ManiSkill2_real2sim
 RUN pip install -e ./SimplerEnv
+
+ENV TRANSFORMERS_CACHE=/data/huggingface_cache
 
 # pip install -e .
