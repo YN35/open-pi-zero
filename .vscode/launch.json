@@ -12,7 +12,32 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Inference Test Train",
+            "name": "Test Inference",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal",
+            //         python scripts/try_checkpoint_in_simpler.py \
+            // --task google_robot_pick_horizontal_coke_can \
+            // --checkpoint_path /data/open-pi-zero/fractal_beta_step29576_2024-12-29_13-10_42.pt \
+            // --recording \
+            // --use_bf16 \
+            // --use_torch_compile # first batch will be slow
+            "program": "scripts/try_checkpoint_in_simpler.py",
+            "args": [
+                "--task",
+                "google_robot_pick_horizontal_coke_can",
+                "--checkpoint_path",
+                "/data/open-pi-zero/fractal_beta_step29576_2024-12-29_13-10_42.pt",
+                "--recording",
+                "--use_bf16",
+                "--use_torch_compile"
+            ],
+            "env": {
+                "CUDA_VISIBLE_DEVICES": "1",
+            }
+        },
+        {
+            "name": "Test Train",
             "type": "debugpy",
             "request": "launch",
             "console": "integratedTerminal",
@@ -43,8 +68,8 @@
                 "debug=True",
                 "wandb=null",
                 "log_dir=results/test/",
-                "global_batch_size=2",
-                "per_device_batch_size=1",
+                "global_batch_size=4",
+                "per_device_batch_size=2",
                 "flow_sampling=beta",
                 "data.train.shuffle_buffer_size=10000",
                 "data.train.num_parallel_calls=10",
@@ -59,7 +84,7 @@
             ],
             "justMyCode": true,
             "env": {
-                "CUDA_VISIBLE_DEVICES": "0",
+                "CUDA_VISIBLE_DEVICES": "1",
                 "HYDRA_FULL_ERROR": "1",
                 "VLA_DATA_DIR": "/data/oxe",
             }
